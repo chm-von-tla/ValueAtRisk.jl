@@ -3,6 +3,10 @@ uuid = "a6faba0b-26a4-479a-8301-f768699ecb7c"
 authors = ["Charis P. Michelakis <ch.p.michelakis@gmail.com>"]
 version = "0.1.0"
 
+[deps]
+ARCHModels = "6d3278bc-c23a-5105-85e5-0d57d2bf684f"
+Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
+
 [compat]
 julia = "1.4.2"
 
