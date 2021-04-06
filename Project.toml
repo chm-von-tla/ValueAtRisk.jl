@@ -1,0 +1,13 @@
+name = "Value_at_Risk"
+uuid = "a6faba0b-26a4-479a-8301-f768699ecb7c"
+authors = ["Charis P. Michelakis <ch.p.michelakis@gmail.com>"]
+version = "0.1.0"
+
+[compat]
+julia = "1.4.2"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
