@@ -1,6 +1,7 @@
 module Value_at_Risk
 
 using ARCHModels
+using Distributions
 
 import Base: show
 import StatsBase: predict
