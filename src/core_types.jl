@@ -18,14 +18,15 @@ confidence_levels(vm::VaRModel) = throw("confidence_levels not implemented for m
 """
     has_arch_dynamics(vm::VaRModel)
 
-Whether the given model contains a specification for auto-regressive conditionally heteroscedastic
-dynamics. If models share such a specification the model is fitted only once during backtesting
+Whether the given model contains a specification for autoregressive conditionaly
+heteroskedastic dynamics. If models share such a specification the model is fitted only once
+during backtesting
 """
 has_arch_dynamics(vm::VaRModel) = false
 
 """
-    predict(vm::VaRModel, Returns::AbstractVector)
+    predict(vm::VaRModel, data::AbstractVector)
 
-Return a one-step ahead VaR forecast with model vm given a vector of returns
+Return a one-step ahead VaR forecast with `VaRModel` vm for the provided data vector
 """
-function predict(vm::VaRModel, Returns::AbstractVector) = throw("predict not implemented for model: $(vm)")
+predict(vm::VaRModel, data::AbstractVector) = throw("predict not implemented for model: $(vm)")
