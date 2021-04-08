@@ -20,4 +20,6 @@ include("VaRTypes/FilteredExtremeValueTheoryVaR.jl")
 include("VaRTypes/FilteredHistoricalSimulationVaR.jl")
 include("VaRTypes/HistoricalSimulationVaR.jl")
 
+greet() = print("Hello, revised World!")
+
 end
