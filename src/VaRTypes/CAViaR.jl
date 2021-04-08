@@ -22,7 +22,7 @@ struct CAViaR_ad{T} <: CAViaR{T}
     end
 end
 CAViaR_ad(α::T) where T<:Real = CAViaR_ad([α])
-Base.show(io::IO,vm::CAViaR_ad) = print(io, "CAViaR adaptive method, $(round.((1 .- vm.αs), digits=4) confidence levels")
+Base.show(io::IO,vm::CAViaR_ad) = print(io, "CAViaR adaptive method, $(round.((1 .- vm.αs), digits=4)) confidence levels")
 shortname(vm::CAViaR_ad)  = "CAViaR-ad"
 confidence_levels(vm::CAViaR_ad) = vm.αs
 
@@ -70,7 +70,7 @@ struct CAViaR_sym{T} <: CAViaR{T}
     end
 end
 CAViaR_sym(α::T) where T<:Real = CAViaR_sym([α])
-Base.show(io::IO,vm::CAViaR_sym) = print(io, "CAViaR symmetric absolute value method, $(round.((1 .- vm.αs), digits=4) confidence levels")
+Base.show(io::IO,vm::CAViaR_sym) = print(io, "CAViaR symmetric absolute value method, $(round.((1 .- vm.αs), digits=4)) confidence levels")
 shortname(vm::CAViaR_sym)  = "CAViaR-sym"
 confidence_levels(vm::CAViaR_sym) = vm.αs
 
@@ -117,7 +117,7 @@ struct CAViaR_asym{T} <: CAViaR{T}
     end
 end
 CAViaR_asym(α::T) where T<:Real = CAViaR_asym([α])
-Base.show(io::IO,vm::CAViaR_asym) = print(io, "CAViaR asymmetric slope method, $(round.((1 .- vm.αs), digits=4) confidence levels")
+Base.show(io::IO,vm::CAViaR_asym) = print(io, "CAViaR asymmetric slope method, $(round.((1 .- vm.αs), digits=4)) confidence levels")
 shortname(vm::CAViaR_asym)  = "CAViaR-asym"
 confidence_levels(vm::CAViaR_asym) = vm.αs
 

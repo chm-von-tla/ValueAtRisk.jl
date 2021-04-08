@@ -7,8 +7,8 @@ using an Exponentially Weighted Moving Average scheme
 struct EWMAHistoricalSimulationVaR{T} <: VaRModel{T}
     αs::Vector{T}
     λ::T
-    function EWMA_HistoricalSimulationVaR(confidence_levels::Vector{T};
-                                          decayfactor::T=94//100) where {T <: Real}
+    function EWMAHistoricalSimulationVaR(confidence_levels::Vector{T};
+                                          decayfactor::T=0.94) where {T <: Real}
         for α in confidence_levels
             0 <= α <= 1 || throw(DomainError(confidence_levels,
              "element of confidence_levels parameters \"α\" must be in the interval [0,1]"))
@@ -22,7 +22,7 @@ function EWMAHistoricalSimulationVaR(α::T; decayfactor::T=0.94) where T<:Real
     EWMAHistoricalSimulationVaR([α],decayfactor=decayfactor)
 end
 Base.show(io::IO,vm::EWMAHistoricalSimulationVaR) = print(io, "Historical Simulation (exponentially weighted moving average, λ=$(vm.λ)), $(round.((1 .- vm.αs), digits=4)) confidence levels")
-shortname(vm::EWMAHistoricalSimulationVaR)  = "EWMA-$(vm.λ)"
+shortname(vm::EWMAHistoricalSimulationVaR)  = "HS-EWMA-$(vm.λ)"
 confidence_levels(vm::EWMAHistoricalSimulationVaR) = vm.αs
 
 function predict(vm::EWMAHistoricalSimulationVaR{T1}, data::AbstractVector) where T1

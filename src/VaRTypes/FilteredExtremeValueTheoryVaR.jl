@@ -26,14 +26,14 @@ function FilteredExtremeValueTheoryVaR(α::T;
                                        archspec=ARCHSpec(GARCH{1,1})) where {T<:Real}
     FilteredExtremeValueTheoryVaR([α],qthreshold=qthreshold,archspec=archspec)
 end
-Base.show(io::IO,vm::FilteredExtremeValueTheoryVaR) = print(io, "Extreme Value Theory (Peaks over Threshold($(vm.qthreshold)) approach) on residuals filtered by $(vm.asp), $(round.((1 .- vm.αs), digits=4) confidence levels")
+Base.show(io::IO,vm::FilteredExtremeValueTheoryVaR) = print(io, "Extreme Value Theory (Peaks over Threshold($(vm.qthreshold)) approach) on residuals filtered by $(vm.asp), $(round.((1 .- vm.αs), digits=4)) confidence levels")
 
 shortname(vm::FilteredExtremeValueTheoryVaR) = "FEVT-$(shortname(vm.asp))"
 confidence_levels(vm::FilteredExtremeValueTheoryVaR) = vm.αs
 has_arch_dynamics(vm::FilteredExtremeValueTheoryVaR) = true
 
 
-function predict(vm::FilteredEVT_VaR{T},data::AbstractVector;prefitted::Union{ARCHModel,Nothing}=nothing) where T
+function predict(vm::FilteredExtremeValueTheoryVaR{T},data::AbstractVector;prefitted::Union{ARCHModel,Nothing}=nothing) where T
     # every model that shares arch dynamics is computed on the right tail of the negative of
     # in order to be compatible with the Extreme Value Theory models
     αs′ = 1 .- vm.αs
@@ -48,8 +48,8 @@ function predict(vm::FilteredEVT_VaR{T},data::AbstractVector;prefitted::Union{AR
     η_dist = pot_find_gpd_dist(losses,qthreshold=vm.qthreshold)
     mean_est .+ (vol_est.*quantile(η_dist,αs′))
 end
-function pot_find_gpd_dist(data::AbstactVector;qthreshold::T) where T<:Real
+function pot_find_gpd_dist(data::AbstractVector;qthreshold::T) where T<:Real
     u = quantile(data, qthreshold)
     excesses = filter(x->(x>u), data)
-    fit_mle(fit_mle(GeneralizedPareto,excesses,u))
+    fit_mle(GeneralizedPareto,excesses,u)
 end
