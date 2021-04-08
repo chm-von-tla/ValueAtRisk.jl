@@ -8,6 +8,7 @@ ARCHModels = "6d3278bc-c23a-5105-85e5-0d57d2bf684f"
 Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
 
 [compat]
+Distributions = "0.24"
 julia = "1.4.2"
 
 [extras]
