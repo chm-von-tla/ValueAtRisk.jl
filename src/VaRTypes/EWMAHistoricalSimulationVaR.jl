@@ -37,5 +37,5 @@ function predict(vm::EWMAHistoricalSimulationVaR{T1}, data::AbstractVector) wher
     σ = sqrt.(ewma_var)
     scaled_ret = [ σ[end] * data[i]/σ[i] for i in 1:T]
 
-    -quantile(data,vm.αs)
+    -quantile(scaled_ret,vm.αs)
 end
