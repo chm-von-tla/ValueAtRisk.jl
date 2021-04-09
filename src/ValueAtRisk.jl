@@ -7,7 +7,8 @@ using Optim
 import Base: show
 import StatsBase: predict
 import Distributions: fit_mle
-# import ARCHModels: UnivariateVolatilitySpec, StandardizedDistribution, MeanSpec, StdNormal, Intercept
+
+export VaRModel, ARCHSpec, shortname, confidence_levels, has_arch_dynamics, ARCHVaR, CAViaR_ad, CAViaR_sym, CAViaR_asym, EWMAHistoricalSimulationVaR, EWMARiskMetricsVaR, ExtremeValueTheoryVaR, FilteredExtremeValueTheoryVaR, FilteredHistoricalSimulationVaR, HistoricalSimulationVaR
 
 include("core_types.jl")
 include("support_types.jl")
