@@ -1,14 +1,14 @@
 ```@meta
-CurrentModule = Value_at_Risk
+CurrentModule = ValueAtRisk
 ```
 
-# Value_at_Risk
+# ValueAtRisk
 
-Documentation for [Value_at_Risk](https://github.com/chm-von-tla/Value_at_Risk.jl).
+Documentation for [ValueAtRisk](https://github.com/chm-von-tla/ValueAtRisk.jl).
 
 ```@index
 ```
 
 ```@autodocs
-Modules = [Value_at_Risk]
+Modules = [ValueAtRisk]
 ```

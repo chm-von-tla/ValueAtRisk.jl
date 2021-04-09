@@ -1,4 +1,4 @@
-# Value_at_Risk
+# ValueAtRisk
 
-[![Build Status](https://travis-ci.com/chm-von-tla/Value_at_Risk.jl.svg?branch=master)](https://travis-ci.com/chm-von-tla/Value_at_Risk.jl)
-[![Coverage](https://codecov.io/gh/chm-von-tla/Value_at_Risk.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/chm-von-tla/Value_at_Risk.jl)
+[![Build Status](https://travis-ci.com/chm-von-tla/ValueAtRisk.jl.svg?branch=master)](https://travis-ci.com/chm-von-tla/ValueAtRisk.jl)
+[![Coverage](https://codecov.io/gh/chm-von-tla/ValueAtRisk.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/chm-von-tla/ValueAtRisk.jl)
