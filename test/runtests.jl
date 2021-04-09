@@ -1,4 +1,5 @@
 using ValueAtRisk
+using Distributions
 using Test
 using Random
 using ARCHModels
@@ -7,7 +8,7 @@ using ARCHModels
 @testset "predict" begin
     test_lvls = [0.01,0.025]
     test_archspec = ARCHSpec(EGARCH{1,1,1}, meanspec=ARMA{1,1}, dist=StdSkewT)
-    @test predict(HistoricalSimulationVaR(test_lvls),BG96) ≈ -quantile(BG96,test_lvls)
+    @test predict(HistoricalSimulationVaR(test_lvls),BG96) ≈ -quantile.(Ref(BG96),test_lvls)
     @test predict(EWMAHistoricalSimulationVaR(test_lvls),BG96) ≈ [1.0097709773632497,
                                                                   0.6924229277249955]
     @test predict(EWMARiskMetricsVaR(test_lvls),BG96) ≈ [0.7129791067589807,

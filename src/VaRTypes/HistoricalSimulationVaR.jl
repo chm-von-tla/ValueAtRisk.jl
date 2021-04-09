@@ -19,4 +19,4 @@ Base.show(io::IO,vm::HistoricalSimulationVaR) = print(io, "Historical Simulation
 shortname(vm::HistoricalSimulationVaR)  = "HS"
 confidence_levels(vm::HistoricalSimulationVaR) = vm.αs
 
-predict(vm::HistoricalSimulationVaR{T}, data::AbstractVector) where T = -quantile(data,vm.αs)
+predict(vm::HistoricalSimulationVaR{T}, data::AbstractVector) where T = -quantile.(Ref(data),vm.αs)

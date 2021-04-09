@@ -45,7 +45,7 @@ function predict(vm::FilteredExtremeValueTheoryVaR{T},data::AbstractVector;prefi
     mean_est = predict(am, :return)
     vol_est = predict(am, :volatility)
     η_dist = pot_find_gpd_dist(η,qthreshold=vm.qthreshold)
-    mean_est .+ (vol_est.*quantile(η_dist,αs′))
+    mean_est .+ (vol_est.*quantile.(Ref(η_dist),αs′))
 end
 function pot_find_gpd_dist(data::AbstractVector;qthreshold::T) where T<:Real
     u = quantile(data, qthreshold)

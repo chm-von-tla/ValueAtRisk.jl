@@ -35,7 +35,7 @@ function predict(vm::FilteredHistoricalSimulationVaR{T1}, data::AbstractVector;p
     am = dupefit(vm.asp, losses; prefitted=prefitted)
 
     η = residuals(am,standardized=true)
-    emp_qs = quantile(η,αs′)
+    emp_qs = quantile.(Ref(η),αs′)
     mean_est = predict(am, :return)
     vol_est = predict(am, :volatility)
     mean_est .+ (vol_est.*emp_qs)

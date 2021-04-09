@@ -37,5 +37,5 @@ function predict(vm::EWMARiskMetricsVaR{T1}, data::AbstractVector) where T1
     end
     cond_vol = sqrt(ewma_var[T+1])
 
-    -quantile(Normal(0,cond_vol),vm.αs)
+    -quantile.(Ref(Normal(0,cond_vol)),vm.αs)
 end
