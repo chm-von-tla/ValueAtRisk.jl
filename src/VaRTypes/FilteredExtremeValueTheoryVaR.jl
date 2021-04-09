@@ -18,7 +18,7 @@ struct FilteredExtremeValueTheoryVaR{T} <: VaRModel{T}
             0 <= α <= 1 || throw(DomainError(confidence_levels, "element of confidence_levels parameters \"α\" must be in the interval [0,1]"))
         end
         0 < qthreshold < 1 || throw(DomainError(confidence_levels, "qthreshold parameter  must be in the interval (0,1)"))
-        new{T}(confidence_levels,qthreshold)
+        new{T}(confidence_levels,qthreshold,archspec)
     end
 end
 function FilteredExtremeValueTheoryVaR(α::T;
@@ -26,9 +26,7 @@ function FilteredExtremeValueTheoryVaR(α::T;
                                        archspec=ARCHSpec(GARCH{1,1})) where {T<:Real}
     FilteredExtremeValueTheoryVaR([α],qthreshold=qthreshold,archspec=archspec)
 end
-# Base.show(io::IO,vm::FilteredExtremeValueTheoryVaR) = print(io, "Extreme Value Theory on residuals filtered by $(vm.asp), $(round.((1 .- vm.αs), digits=4)) confidence levels")
-
-Base.show(io::IO,vm::FilteredExtremeValueTheoryVaR) = print(io, "test")
+Base.show(io::IO,vm::FilteredExtremeValueTheoryVaR) = print(io, "Extreme Value Theory on residuals filtered by $(vm.asp), $(round.((1 .- vm.αs), digits=4)) confidence levels")
 shortname(vm::FilteredExtremeValueTheoryVaR) = "FEVT-$(shortname(vm.asp))"
 confidence_levels(vm::FilteredExtremeValueTheoryVaR) = vm.αs
 has_arch_dynamics(vm::FilteredExtremeValueTheoryVaR) = true
@@ -46,7 +44,7 @@ function predict(vm::FilteredExtremeValueTheoryVaR{T},data::AbstractVector;prefi
 
     mean_est = predict(am, :return)
     vol_est = predict(am, :volatility)
-    η_dist = pot_find_gpd_dist(losses,qthreshold=vm.qthreshold)
+    η_dist = pot_find_gpd_dist(η,qthreshold=vm.qthreshold)
     mean_est .+ (vol_est.*quantile(η_dist,αs′))
 end
 function pot_find_gpd_dist(data::AbstractVector;qthreshold::T) where T<:Real

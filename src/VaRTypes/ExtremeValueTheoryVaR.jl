@@ -1,5 +1,5 @@
 #warning: the loglikelihood function used makes the assumption of heavy-tailed data
-#TODO: maybe generalize?
+#TODO: generalize?
 """
     ExtremeValueTheoryVaR{T} <: VaRModel{T}
 

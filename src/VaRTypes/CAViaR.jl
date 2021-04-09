@@ -41,7 +41,7 @@ function _singleq_predict(vm::CAViaR_ad{T1}, data::AbstractVector) where T1
     Hits = similar(data)
 
     β′ = _cav_optim_loop!(β->CAViaR_obj!(vm,β,data,VaRs,Hits,empq,α,T), 1, BFGS())
-    ############### RETURN VaR: do I need to run the loops again?
+    VaRs[end]
 end
 
 @inline function CAViaR_obj!(vm::CAViaR_ad,β,data,VaRs,Hits,empq,α,T)
@@ -89,13 +89,14 @@ function _singleq_predict(vm::CAViaR_sym{T1}, data::AbstractVector) where T1
     Hits = similar(data)
 
     β′ = _cav_optim_loop!(β->CAViaR_obj!(vm,β,data,VaRs,Hits,empq,α,T), 3, NelderMead())
+    VaRs[end]
 end
 
 @inline function CAViaR_obj!(vm::CAViaR_sym,β,data,VaRs,Hits,empq,α,T)
     CAViaR_obj_init!(data,VaRs,Hits,empq,α)
     @inbounds for i in 2:T
-        VaRs[i] = β[1] + β[2]*VaRs[i-1] + β[3]*abs(y[i-1])
-        Hits[i] = (y[i] < -VaRs[i] ? 1 : 0) - α
+        VaRs[i] = β[1] + β[2]*VaRs[i-1] + β[3]*abs(data[i-1])
+        Hits[i] = (data[i] < -VaRs[i] ? 1 : 0) - α
     end
     CAViaR_obj_qr(data,VaRs,Hits)
 end
@@ -136,13 +137,14 @@ function _singleq_predict(vm::CAViaR_asym{T1}, data::AbstractVector) where T1
     Hits = similar(data)
 
     β′ = _cav_optim_loop!(β->CAViaR_obj!(vm,β,data,VaRs,Hits,empq,α,T), 4, NelderMead())
+    VaRs[end]
 end
 
 @inline function CAViaR_obj!(vm::CAViaR_asym,β,data,VaRs,Hits,empq,α,T)
     CAViaR_obj_init!(data,VaRs,Hits,empq,α)
     @inbounds for i in 2:T
-        VaRs[i] = β[1] + β[2]*VaRs[i-1] + β[3]*max(y[i-1],0) + β[4]*min(y[i-1],0)
-        Hits[i] = (y[i] < -VaRs[i] ? 1 : 0) - α
+        VaRs[i] = β[1] + β[2]*VaRs[i-1] + β[3]*max(data[i-1],0) + β[4]*min(data[i-1],0)
+        Hits[i] = (data[i] < -VaRs[i] ? 1 : 0) - α
     end
     CAViaR_obj_qr(data,VaRs,Hits)
 end

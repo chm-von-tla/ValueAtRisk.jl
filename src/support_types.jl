@@ -16,7 +16,6 @@ function Base.show(io::IO,asp::ARCHSpec)
     volspec = "$(asp.volspec)"
     str_lst = [meanspec, volspec]
 
-
     for i in eachindex(str_lst)
         if (m = match(r"(?<start>.*)(?<ignore>,T} where T)",str_lst[i]); m != nothing)
             str_lst[i] = m["start"] * "}"
