@@ -31,5 +31,5 @@ function predict(vm::ARCHVaR{T}, data::AbstractVector;
 
     am = dupefit(vm.asp,losses,prefitted=prefitted)
 
-    (α′ -> predict(am, :VaR; level=α′)).(αs′)
+    (α′ -> -predict(am, :VaR; level=α′)).(αs′)
 end

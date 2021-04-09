@@ -50,12 +50,12 @@ function fit_mle(::Type{<:GeneralizedPareto}, excesses::AbstractVector, u::T) wh
     GeneralizedPareto(σ,ξ)
 end
 
-function _loglik(::Type{<:GeneralizedPareto}, excesses::AbstractVector, uthreshold::T, log_σ::T, log_ξ::T) where T<:Real
+function _loglik(::Type{<:GeneralizedPareto}, excesses::AbstractVector, uthreshold, log_σ, log_ξ)
     #warning: the assumption ξ ≠ 0 is made since we assume to be working with heavy-tailed
     #data (in which case ξ > 0)
     σ = exp(log_σ)
     ξ = exp(log_ξ)
-    n = length(data)
+    n = length(excesses)
     Y = excesses.-uthreshold
     LL = -n*log(σ) -(1 + 1/ξ)*sum(log.(1 .+ ξ.*Y./σ))
     -LL

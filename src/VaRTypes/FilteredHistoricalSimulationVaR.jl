@@ -32,7 +32,7 @@ function predict(vm::FilteredHistoricalSimulationVaR{T1}, data::AbstractVector;p
     αs′ = 1 .- vm.αs
     losses = -data
 
-    am = dupefit(losses, vm.asp; prefitted=prefitted)
+    am = dupefit(vm.asp, losses; prefitted=prefitted)
 
     η = residuals(am,standardized=true)
     emp_qs = quantile(η,αs′)

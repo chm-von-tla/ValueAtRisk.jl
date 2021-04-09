@@ -6,7 +6,7 @@ meanspec=Intercept, algorithm=BFGS(), autodiff=:forward, kwargs...)` that catche
 `AssertionError`s thrown when the requested `ARCHSpec` could not be fitted and falls back to
 fitting GARCH{1,1} as the volatility specification
 """
-function flexfit(data::AbstractVector, asp::ARCHSpec)
+function flexfit(asp::ARCHSpec, data::AbstractVector)
     try
         fit(asp.volspec, data, meanspec = asp.meanspec, dist=asp.dist)
     catch e

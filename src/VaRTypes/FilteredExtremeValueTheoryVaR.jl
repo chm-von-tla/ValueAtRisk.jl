@@ -26,8 +26,9 @@ function FilteredExtremeValueTheoryVaR(α::T;
                                        archspec=ARCHSpec(GARCH{1,1})) where {T<:Real}
     FilteredExtremeValueTheoryVaR([α],qthreshold=qthreshold,archspec=archspec)
 end
-Base.show(io::IO,vm::FilteredExtremeValueTheoryVaR) = print(io, "Extreme Value Theory (Peaks over Threshold($(vm.qthreshold)) approach) on residuals filtered by $(vm.asp), $(round.((1 .- vm.αs), digits=4)) confidence levels")
+# Base.show(io::IO,vm::FilteredExtremeValueTheoryVaR) = print(io, "Extreme Value Theory on residuals filtered by $(vm.asp), $(round.((1 .- vm.αs), digits=4)) confidence levels")
 
+Base.show(io::IO,vm::FilteredExtremeValueTheoryVaR) = print(io, "test")
 shortname(vm::FilteredExtremeValueTheoryVaR) = "FEVT-$(shortname(vm.asp))"
 confidence_levels(vm::FilteredExtremeValueTheoryVaR) = vm.αs
 has_arch_dynamics(vm::FilteredExtremeValueTheoryVaR) = true
@@ -39,7 +40,7 @@ function predict(vm::FilteredExtremeValueTheoryVaR{T},data::AbstractVector;prefi
     αs′ = 1 .- vm.αs
     losses = -data
 
-    am = dupefit(losses,vm.asp,prefitted=prefitted)
+    am = dupefit(vm.asp,losses,prefitted=prefitted)
 
     η = residuals(am,standardized=true)
 
