@@ -30,10 +30,10 @@ end
 # generate lists of models
 function non_arch_models(αs::Vector{<:Real})
     [HistoricalSimulationVaR(αs),
-     EWMAHistoricalSimulationVaR(αs,0.94),
-     EWMAHistoricalSimulationVaR(αs,0.99),
-     EWMARiskMetricsVaR(αs,0.94),
-     EWMARiskMetricsVaR(αs,0.99),
+     EWMAHistoricalSimulationVaR(αs,decayfactor=0.94),
+     EWMAHistoricalSimulationVaR(αs,decayfactor=0.99),
+     EWMARiskMetricsVaR(αs,decayfactor=0.94),
+     EWMARiskMetricsVaR(αs,decayfactor=0.99),
      CAViaR_ad(αs),
      CAViaR_sym(αs),
      CAViaR_asym(αs),
