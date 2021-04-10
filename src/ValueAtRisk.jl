@@ -3,6 +3,7 @@ module ValueAtRisk
 using ARCHModels
 using Distributions
 using Optim
+using ExtremeStats
 
 import Base: show
 import StatsBase: predict

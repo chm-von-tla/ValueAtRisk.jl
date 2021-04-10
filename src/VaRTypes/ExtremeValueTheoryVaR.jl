@@ -1,5 +1,3 @@
-#warning: the loglikelihood function used makes the assumption of heavy-tailed data
-#TODO: generalize?
 """
     ExtremeValueTheoryVaR{T} <: VaRModel{T}
 
@@ -33,13 +31,22 @@ function predict(vm::ExtremeValueTheoryVaR{T1}, data::AbstractVector) where T1
     T = length(losses)
     u = quantile(losses,vm.qthreshold)
 
+
     excesses = filter(x->(x>u), losses)
     k = length(excesses)
 
-    _, σ, ξ = params(fit_mle(GeneralizedPareto,excesses,u))
+    local _, σ, ξ
+    try
+        _, σ, ξ = params(fit_mle(GeneralizedPareto, PeakOverThreshold(losses,u)))
+    catch e
+        @warn "ExtremeStats threw $(e.msg). Falling back to native optimization algorithm"
+        _, σ, ξ = params(fit_mle(GeneralizedPareto, excesses, u))
+    end
 
-    u .+ (α′ -> (x = (σ/ξ)*(((T*(1-α′))/k)^-ξ - 1); !isnan(x) ? x : 0)).(αs′)
+    (α->(EVT_VaR(u, k, T, σ, ξ, α))).(vm.αs)
 end
+
+@inline EVT_VaR(u, k, T, σ, ξ, α) =  u + σ/ξ * ((T*α/k)^-ξ - 1)
 
 function fit_mle(::Type{<:GeneralizedPareto}, excesses::AbstractVector, u::T) where T<:Real
     objfunc = TwiceDifferentiable(coeffs->_loglik(GeneralizedPareto, excesses, u,
