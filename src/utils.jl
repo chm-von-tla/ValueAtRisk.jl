@@ -26,3 +26,21 @@ A wrapper around `flexfit(asp::ARCHSpec, data::AbstractVector)` that fits an `AR
 function dupefit(asp::ARCHSpec, data::AbstractVector; prefitted::Union{ARCHModel,Nothing}=nothing)
     prefitted != nothing ? prefitted : flexfit(asp,data)
 end
+
+# generate lists of models
+function non_arch_models(αs::Vector{<:Real})
+    [HistoricalSimulationVaR(αs),
+     EWMAHistoricalSimulationVaR(αs,0.94),
+     EWMAHistoricalSimulationVaR(αs,0.99),
+     EWMARiskMetricsVaR(αs,0.94),
+     EWMARiskMetricsVaR(αs,0.99),
+     CAViaR_ad(αs),
+     CAViaR_sym(αs),
+     CAViaR_asym(αs),
+     ExtremeValueTheoryVaR(αs)]
+end
+function arch_models(αs::Vector{<:Real},asp::ARCHSpec)
+    [ARCHVaR(αs,archspec=asp),
+     FilteredHistoricalSimulationVaR(αs,archspec=asp),
+     FilteredExtremeValueTheoryVaR(αs,archspec=asp)]
+end

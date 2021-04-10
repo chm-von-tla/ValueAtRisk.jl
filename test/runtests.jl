@@ -32,6 +32,14 @@ using ARCHModels
     @test predict(CAViaR_sym(test_lvls),BG96) ≈ [1.1948822219187047, 0.8192804874236312]
     @test predict(CAViaR_asym(test_lvls),BG96) ≈ [1.2069491626655224, 0.8872412502254272]
 end
+@testset "shares_arch_dynamics" begin
+    for vm in non_arch_models(test_lvls)
+        @test shares_arch_dynamics == false
+    end
+    for vm in arch_models(test_lvls,test_archspec)
+        @test shares_arch_dynamics == true
+    end
+end
 
 # print method ambiguities
 println("Potentially stale exports: ")

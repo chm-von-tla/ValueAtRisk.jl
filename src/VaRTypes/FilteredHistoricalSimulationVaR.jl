@@ -24,7 +24,7 @@ end
 Base.show(io::IO,vm::FilteredHistoricalSimulationVaR) = print(io, "Historical Simulation on residuals filtered by $(vm.asp), $(round.((1 .- vm.αs),digits=4)) confidence levels")
 shortname(vm::FilteredHistoricalSimulationVaR)  = "FHS-$(shortname(vm.asp))"
 confidence_levels(vm::FilteredHistoricalSimulationVaR) = vm.αs
-has_arch_dynamics(vm::FilteredHistoricalSimulationVaR) = true
+shares_arch_dynamics(vm::FilteredHistoricalSimulationVaR) = true
 
 function predict(vm::FilteredHistoricalSimulationVaR{T1}, data::AbstractVector;prefitted::Union{ARCHModel,Nothing}=nothing) where T1
     # every model that shares arch dynamics is computed on the right tail of the negative of

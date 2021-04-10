@@ -29,7 +29,7 @@ end
 Base.show(io::IO,vm::FilteredExtremeValueTheoryVaR) = print(io, "Extreme Value Theory on residuals filtered by $(vm.asp), $(round.((1 .- vm.αs), digits=4)) confidence levels")
 shortname(vm::FilteredExtremeValueTheoryVaR) = "FEVT-$(shortname(vm.asp))"
 confidence_levels(vm::FilteredExtremeValueTheoryVaR) = vm.αs
-has_arch_dynamics(vm::FilteredExtremeValueTheoryVaR) = true
+shares_arch_dynamics(vm::FilteredExtremeValueTheoryVaR) = true
 
 
 function predict(vm::FilteredExtremeValueTheoryVaR{T},data::AbstractVector;prefitted::Union{ARCHModel,Nothing}=nothing) where T

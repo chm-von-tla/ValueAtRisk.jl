@@ -20,7 +20,7 @@ end
 Base.show(io::IO,vm::ARCHVaR) = print(io, "$(vm.asp), $(round.((1 .- vm.αs), digits=4)) confidence levels")
 shortname(vm::ARCHVaR)  = shortname(vm.asp)
 confidence_levels(vm::ARCHVaR) = vm.αs
-has_arch_dynamics(vm::ARCHVaR) = true
+shares_arch_dynamics(vm::ARCHVaR) = true
 
 function predict(vm::ARCHVaR{T}, data::AbstractVector;
                  prefitted::Union{ARCHModel, Nothing}=nothing) where T
