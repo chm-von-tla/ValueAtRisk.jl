@@ -35,9 +35,35 @@ function predict(vm::ExtremeValueTheoryVaR{T1}, data::AbstractVector) where T1
     excesses = filter(x->(x>u), losses)
     k = length(excesses)
 
-    _, σ, ξ = params(fit_mle(GeneralizedPareto, PeakOverThreshold(losses,u)))
+    local _, σ, ξ
+    try
+        _, σ, ξ = params(fit_mle(GeneralizedPareto, PeakOverThreshold(losses,u)))
+    catch e
+        @warn "ExtremeStats threw $(e.msg). Falling back to native optimization algorithm"
+        _, σ, ξ = params(fit_mle(GeneralizedPareto, excesses, u))
+    end
 
     (α->(EVT_VaR(u, k, T, σ, ξ, α))).(vm.αs)
 end
 
 @inline EVT_VaR(u, k, T, σ, ξ, α) =  u + σ/ξ * ((T*α/k)^-ξ - 1)
+
+function fit_mle(::Type{<:GeneralizedPareto}, excesses::AbstractVector, u::T) where T<:Real
+    objfunc = TwiceDifferentiable(coeffs->_loglik(GeneralizedPareto, excesses, u,
+                                                  coeffs[1], coeffs[2]),
+                                  [1.,0.05]; autodiff=:forward)
+    opt = optimize(objfunc,[1.,0.05])
+    σ, ξ = exp.(opt.minimizer)
+    GeneralizedPareto(σ,ξ)
+end
+
+function _loglik(::Type{<:GeneralizedPareto}, excesses::AbstractVector, uthreshold, log_σ, log_ξ)
+    #warning: the assumption ξ ≠ 0 is made since we assume to be working with heavy-tailed
+    #data (in which case ξ > 0)
+    σ = exp(log_σ)
+    ξ = exp(log_ξ)
+    n = length(excesses)
+    Y = excesses.-uthreshold
+    LL = -n*log(σ) -(1 + 1/ξ)*sum(log.(1 .+ ξ.*Y./σ))
+    -LL
+end
