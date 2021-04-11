@@ -5,7 +5,7 @@ A type that contains information on the results of backtesting a `VaRModel` on a
 """
 struct BacktestResult{T<:Real}
     dataset::String
-    vm::VaRModel
+    vm::Type{<:VaRModel}
     windowsize::Int
     observations::Int
     violations::Int
@@ -16,7 +16,7 @@ struct BacktestResult{T<:Real}
 end
 
 """
-    BacktestResult(dataset::String, vm::VaRModel, windowsize::Integer, level::T1
+    BacktestResult(dataset::String, vm::Type{<:VaRModel}, windowsize::Integer, level::T1,
                    data::Vector{T1}, vars::Vector{T1}; lags::Integer=1) where T1<:Real
 
 Create an object of type `BacktestResult`. `dataset` specifies the name of the dataset on
@@ -28,7 +28,7 @@ estimates. The optional parameter `lags` specifies the number of lags used in th
 and `LjungBoxTest` for testing the time independence of the violations/hits sequence of VaR
 estimates.
 """
-function BacktestResult(dataset::String, vm::VaRModel, windowsize::T2, level::T1,
+function BacktestResult(dataset::String, vm::Type{<:VaRModel}, windowsize::T2, level::T1,
                         data::Vector{T1}, vars::Vector{T1}; lags::T2=1) where {T1<:Real,
                                                                                T2<:Integer}
     @assert length(data) == length(vars)

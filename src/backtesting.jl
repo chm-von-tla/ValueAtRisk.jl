@@ -104,7 +104,7 @@ end
     results = BacktestResult[]
     for (vm, forecasts) in pairs(res_dict)
         for i in 1:length(vm.αs)
-            push!(results, BacktestResult(dataset_name, vm, windowsize,
+            push!(results, BacktestResult(dataset_name, typeof(vm), windowsize,
                                           confidence_levels(vm)[i],
                                           realizations, forecasts[:,i], lags=lags))
         end
