@@ -14,7 +14,7 @@ import ARCHModels: DQTest
 import HypothesisTests: HypothesisTest, testname, population_param_of_interest, show_params, pvalue, LjungBoxTest
 
 
-export VaRModel, ARCHSpec, shortname, confidence_levels, shares_arch_dynamics, ARCHVaR, CAViaR_ad, CAViaR_sym, CAViaR_asym, EWMAHistoricalSimulationVaR, EWMARiskMetricsVaR, ExtremeValueTheoryVaR, FilteredExtremeValueTheoryVaR, FilteredHistoricalSimulationVaR, HistoricalSimulationVaR, backtest, BacktestResult, LRucTest, LjungBoxTest, BG96
+export VaRModel, ARCHSpec, shortname, confidence_levels, shares_arch_dynamics, ARCHVaR, CAViaR_ad, CAViaR_sym, CAViaR_asym, EWMAHistoricalSimulationVaR, EWMARiskMetricsVaR, ExtremeValueTheoryVaR, FilteredExtremeValueTheoryVaR, FilteredHistoricalSimulationVaR, HistoricalSimulationVaR, backtest, BacktestResult, LRucTest, LjungBoxTest
 
 include("core_types.jl")
 include("support_types.jl")
