@@ -21,25 +21,8 @@ function backtest(vms::Vector{<:VaRModel}, data::Vector{<:Real},
 
     archmods = shared_arch_models_dict(vms)
 
-    @threads for t in windowsize+1:T
-        insample = data[t-windowsize:t-1]
+    backtesting_loop!(res_dict,vms,data,windowsize,T,archmods)
 
-        # fit shared arch models
-        archmods = fit_models!(archmods, insample)
-
-        for vm in vms
-            if shares_arch_dynamics(vm)
-                for (asp, am) in pairs(archmods)
-                    if vm.asp == asp
-                        (res_dict[vm])[t-windowsize] = predict(vm,insample;prefitted=am)
-                        break
-                    end
-                end
-            else
-                (res_dict[vm])[t-windowsize,:] = predict(vm,insample)
-            end
-        end
-    end
     get_backtest_results(res_dict, realizations, windowsize, dataset_name, lags=lags)
 end
 
@@ -74,6 +57,31 @@ function shared_arch_models_dict(vms::Vector{<:VaRModel})
     end
     result
 end
+
+Base.@propagate_inbounds @inline function backtesting_loop!(res_dict,vms,data,windowsize,
+                                                            T,archmods)
+    @threads for t in windowsize+1:T
+        insample = data[t-windowsize:t-1]
+
+        # fit shared arch models
+        archmods = fit_models!(archmods, insample)
+
+        for vm in vms
+            if shares_arch_dynamics(vm)
+                for (asp, am) in pairs(archmods)
+                    if vm.asp == asp
+                        (res_dict[vm])[t-windowsize] = predict(vm,insample;prefitted=am)
+                        break
+                    end
+                end
+            else
+                (res_dict[vm])[t-windowsize,:] = predict(vm,insample)
+            end
+        end
+    end
+    res_dict
+end
+
 
 @inline function init_results_dict(vms, data, T, windowsize)
     result=Dict{eltype(vms),Array{eltype(data),2}}()
