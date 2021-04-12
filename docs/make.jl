@@ -8,15 +8,12 @@ makedocs(;
     authors="Charis P. Michelakis <ch.p.michelakis@gmail.com>",
     repo="https://github.com/chm-von-tla/ValueAtRisk.jl/blob/{commit}{path}#{line}",
     sitename="ValueAtRisk.jl",
-    format=Documenter.HTML(;
-        prettyurls=get(ENV, "CI", "false") == "true",
-        assets=String[],
-    ),
+    format=:html,
     pages=[
         "Home" => "index.md",
     ],
 )
 
 deploydocs(
-    repo = "github.com/chm-von-tla/ValueAtRisk.jl",
+    repo = "github.com/chm-von-tla/ValueAtRisk.jl.git",
 )
