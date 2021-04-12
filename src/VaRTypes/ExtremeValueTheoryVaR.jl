@@ -36,6 +36,7 @@ function predict(vm::ExtremeValueTheoryVaR{T1}, data::AbstractVector) where T1
     k = length(excesses)
 
     _, σ, ξ = params(fit_mle(GeneralizedPareto, excesses, u))
+    ξ = (ξ < 1e-9 ? 1e-9 : ξ) # add lower bound for ξ for stability of EVT_VaR
 
     (α->(EVT_VaR(u, k, T, σ, ξ, α))).(vm.αs)
 end
