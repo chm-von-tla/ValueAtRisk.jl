@@ -58,8 +58,15 @@ function shared_arch_models_dict(vms::Vector{<:VaRModel})
     result
 end
 
-Base.@propagate_inbounds @inline function backtesting_loop!(res_dict,vms,data,windowsize,
-                                                            T,archmods)
+Base.@propagate_inbounds @inline function backtesting_loop!(res_dict::Dict{VM,Array{T1,2}},
+                                                            vms::Vector{<:VM},
+                                                            data::Vector{<:T1},
+                                                            windowsize::T2,
+                                                            T::T2,
+                                                            archmods::Dict{ARCHSpec,
+                                                                           Union{ARCHModel,
+                                                                                 Nothing}}) where {VM<:VaRModel, T1<:Real, T2<:Integer}
+
     @threads for t in windowsize+1:T
         insample = data[t-windowsize:t-1]
 
@@ -83,7 +90,8 @@ Base.@propagate_inbounds @inline function backtesting_loop!(res_dict,vms,data,wi
 end
 
 
-@inline function init_results_dict(vms, data, T, windowsize)
+@inline function init_results_dict(vms::Vector{VM}, data::Vector{<:Real},
+                                   T::Integer, windowsize::Integer) where VM<:VaRModel
     result=Dict{eltype(vms),Array{eltype(data),2}}()
     for vm in vms
         nlvls = length(vm.αs)
@@ -92,15 +100,19 @@ end
     result
 end
 
-@inline function fit_models!(ams::Dict{ARCHSpec, Union{ARCHModel, Nothing}},data)
+@inline function fit_models!(ams::Dict{ARCHSpec, Union{ARCHModel, Nothing}},
+                             data::Vector{<:Real})
     for (asp, am) in pairs(ams)
         ams[asp] = flexfit(asp,data)
     end
     ams
 end
 
-@inline function get_backtest_results(res_dict, realizations, windowsize, dataset_name;
-                                          lags=1)
+@inline function get_backtest_results(res_dict::Dict{VM,Array{T1,2}},
+                                      realizations::Vector{T1},
+                                      windowsize::Integer,
+                                      dataset_name::String;
+                                      lags::Integer=1) where {VM<:VaRModel,T1<:Real}
     results = BacktestResult[]
     for (vm, forecasts) in pairs(res_dict)
         for i in 1:length(vm.αs)
