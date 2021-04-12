@@ -40,3 +40,30 @@ function BacktestResult(dataset::String, vm::VaRModel, windowsize::T2, level::T1
     BacktestResult(dataset, vm, windowsize, length(violations), sum(violations), level, LR,
                    DQ, LB)
 end
+
+
+function Base.show(io::IO, res::BacktestResult)
+    vmname_format=r"(?<name_only>.*)(?<confidence_levels>\[.* confidence levels)"
+    vm_name = match(vmname_format, repr(res.vm))
+    vm_name = vm_name["name_only"]
+    print(io,
+"""
+______________________________________________________________________
+
+Backtesting run on:                         $(res.dataset)
+Method used:                                $(shortname(res.vm))
+Confidence level:                           $((1 - res.level)*100)%
+
+In-sample observations/window size:         $(res.windowsize)
+Out-of-sample observations:                 $(res.observations)
+Violations:                                 $(res.violations)
+
+Value-at-Risk quantile level:               $(res.level*100)%
+Violations percentage:                      $(res.violations/res.observations*100)%
+
+Uncondtional Coverage LR Test p-value:      $(pvalue(res.LRuc))
+Dynamic Quantile Test p-value:              $(pvalue(res.DQ))
+Ljung-Box Test p-value:                     $(pvalue(res.LB))
+______________________________________________________________________
+""")
+end
