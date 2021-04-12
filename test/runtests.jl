@@ -5,10 +5,10 @@ using Random
 using ARCHModels
 
 
+Random.seed!(36)
+test_lvls = [0.01,0.025]
+test_archspec = ARCHSpec(EGARCH{1,1,1}, meanspec=ARMA{1,1}, dist=StdSkewT)
 @testset "predict" begin
-    Random.seed!(36)
-    test_lvls = [0.01,0.025]
-    test_archspec = ARCHSpec(EGARCH{1,1,1}, meanspec=ARMA{1,1}, dist=StdSkewT)
     @test isapprox(predict(HistoricalSimulationVaR(test_lvls),BG96), -quantile.(Ref(BG96),test_lvls), rtol=1e-6)
     @test isapprox(predict(EWMAHistoricalSimulationVaR(test_lvls),BG96), [1.0097709773632497, 0.6924229277249955], rtol=1e-6)
     @test isapprox(predict(EWMARiskMetricsVaR(test_lvls),BG96), [0.7129791067589807, 0.6006897706789867], rtol=1e-6)

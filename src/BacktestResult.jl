@@ -9,7 +9,7 @@ struct BacktestResult{T<:Real}
     windowsize::Int
     observations::Int
     violations::Int
-    confidence_level::T
+    level::T
     LRuc::LRucTest
     DQ::DQTest
     LB::LjungBoxTest

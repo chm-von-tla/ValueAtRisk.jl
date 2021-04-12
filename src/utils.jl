@@ -44,3 +44,5 @@ function arch_models(αs::Vector{<:Real},asp::ARCHSpec)
      FilteredHistoricalSimulationVaR(αs,archspec=asp),
      FilteredExtremeValueTheoryVaR(αs,archspec=asp)]
 end
+
+all_models(αs::Vector{<:Real},asp::ARCHSpec) = vcat(non_arch_models(αs),arch_models(αs,asp))
