@@ -16,3 +16,7 @@ makedocs(;
         "Home" => "index.md",
     ],
 )
+
+deploydocs(
+    repo = "github.com/chm-von-tla/ValueAtRisk.jl",
+)
