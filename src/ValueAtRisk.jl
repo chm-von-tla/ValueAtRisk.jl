@@ -2,7 +2,6 @@ module ValueAtRisk
 
 using Distributions
 using Optim
-using ExtremeStats
 using Base.Threads
 using HypothesisTests
 using Reexport

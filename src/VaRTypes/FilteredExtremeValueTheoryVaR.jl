@@ -49,8 +49,6 @@ function predict(vm::FilteredExtremeValueTheoryVaR{T},data::AbstractVector;prefi
 end
 function pot_find_gpd_dist(data::AbstractVector;qthreshold::T) where T<:Real
     u = quantile(data, qthreshold)
-    # fit gpd
-    _, σ, ξ = params(fit_mle(GeneralizedPareto, PeakOverThreshold(data,u)))
-    # drop mean parameter
-    GeneralizedPareto(0,σ,ξ)
+    excesses = filter(x->(x>u), data)
+    fit_mle(GeneralizedPareto, excesses, u)
 end
