@@ -33,6 +33,13 @@ end
         @test shares_arch_dynamics(vm) == true
     end
 end
+@testset "names_format" begin
+    vmname_format=r"(?<name_only>.*), (?<confidence_levels>\[.*\] confidence levels)"
+    for vm in ValueAtRisk.all_models(test_lvls,test_archspec)
+        m = match(vmname_format,repr(vm))
+        @test m["name_only"] != nothing && m["confidence_levels"] == "$(round.((1 .- test_lvls), digits=4)) confidence levels"
+    end
+end
 
 # print method ambiguities
 println("Potentially stale exports: ")

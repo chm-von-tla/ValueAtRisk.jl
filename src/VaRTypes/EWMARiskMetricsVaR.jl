@@ -22,7 +22,7 @@ end
 function EWMARiskMetricsVaR(α::T; decayfactor::T=0.94) where T<:Real
     EWMARiskMetricsVaR([α],decayfactor=decayfactor)
 end
-Base.show(io::IO,vm::EWMARiskMetricsVaR) = print(io, "RiskMetrics EWMA approach, λ=$(vm.λ) $(round.((1 .- vm.αs), digits=4)) confidence levels")
+Base.show(io::IO,vm::EWMARiskMetricsVaR) = print(io, "RiskMetrics EWMA approach, λ=$(vm.λ), $(round.((1 .- vm.αs), digits=4)) confidence levels")
 shortname(vm::EWMARiskMetricsVaR)  = "RM-EWMA-$(vm.λ)"
 confidence_levels(vm::EWMARiskMetricsVaR) = vm.αs
 
