@@ -1,11 +1,12 @@
 module ValueAtRisk
 
-using ARCHModels
 using Distributions
 using Optim
 using ExtremeStats
 using Base.Threads
 using HypothesisTests
+using Reexport
+@reexport using ARCHModels
 
 import Base: show
 import StatsBase: predict
