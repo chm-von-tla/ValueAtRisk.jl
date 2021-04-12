@@ -39,7 +39,7 @@ function predict(vm::ExtremeValueTheoryVaR{T1}, data::AbstractVector) where T1
     try
         _, σ, ξ = params(fit_mle(GeneralizedPareto, PeakOverThreshold(losses,u)))
     catch e
-        @warn "ExtremeStats threw $(e.msg). Falling back to native optimization algorithm"
+        @warn "ExtremeStats threw \"$(e.msg)\". Falling back to native optimization algorithm"
         _, σ, ξ = params(fit_mle(GeneralizedPareto, excesses, u))
         # ensure a lower bound for ξ so that EVT_VaR works
         ξ = (ξ > 10^-9 ? ξ : 10^-9)
