@@ -70,7 +70,7 @@ Base.@propagate_inbounds @inline function backtesting_loop!(res_dict,vms,data,wi
             if shares_arch_dynamics(vm)
                 for (asp, am) in pairs(archmods)
                     if vm.asp == asp
-                        (res_dict[vm])[t-windowsize] = predict(vm,insample;prefitted=am)
+                        (res_dict[vm])[t-windowsize,:] = predict(vm,insample;prefitted=am)
                         break
                     end
                 end
@@ -94,7 +94,7 @@ end
 
 @inline function fit_models!(ams::Dict{ARCHSpec, Union{ARCHModel, Nothing}},data)
     for (asp, am) in pairs(ams)
-        ams[am] = flexfit(am,data)
+        ams[asp] = flexfit(asp,data)
     end
     ams
 end
