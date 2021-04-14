@@ -17,10 +17,10 @@ Historical Simulation (naive empirical quantile approach), [0.99] confidence lev
 A lot of the implemented methods depend on an ARCH model specification. We use the [`ARCHModels`](@ref) package for these methods and we provide a wrapper type for specification of the arch dynamics
 ```jldoctest MANUAL
 julia> asp = ARCHSpec(GARCH{1,1})
-Intercept-GARCH{1, 1, T} where T<:AbstractFloat model with StdNormal innovations
+Intercept-TGARCH{0,1,1} model with StdNormal innovations
 
 julia> asp2 = ARCHSpec(EGARCH{1,1,1},meanspec=AR{1},dist=StdSkewT)
-AR{1, T} where T-EGARCH{1, 1, 1, T} where T<:AbstractFloat model with StdSkewT innovations
+ARMA{1,0}-EGARCH{1,1,1} model with StdSkewT innovations
 ```
 
 You can then specify a model with ARCH dynamics like so:
@@ -33,12 +33,17 @@ You can obtain VaR forecasts by using the [`predict`](@ref) function:
 ```jldoctest MANUAL
 # using the BG96 dataset provided by ARCHModels
 julia> predict(fevt,BG96)
-[1.5173537504541281]
+1-element Array{Float64,1}:
+ 1.5173537504604684
 ```
 
 You can also use the [`backtest`](@ref) function to evaluate the out-of-sample forecasting performance of a [`VaRModel`](@ref). [`backtest`](@ref) returns an object of type [`BacktestResult`](@ref)
 ```jldoctest MANUAL
 julia> backtest(fevt,BG96,500)
+┌ Warning: Could not fit EGARCH{1,1,1,T} where T<:AbstractFloat, falling back to GARCH{1,1}
+└ @ ValueAtRisk ~/pgm/julia/dev/ValueAtRisk/src/utils.jl:14
+┌ Warning: Could not fit EGARCH{1,1,1,T} where T<:AbstractFloat, falling back to GARCH{1,1}
+└ @ ValueAtRisk ~/pgm/julia/dev/ValueAtRisk/src/utils.jl:14
 ______________________________________________________________________
 
 Backtesting run on:                         Dataset name not specified
@@ -53,8 +58,8 @@ Value-at-Risk quantile level:               1.0%
 Violations percentage:                      1.289009497964722%
 
 Uncondtional Coverage LR Test p-value:      0.285723380115036
-Dynamic Quantile Test p-value:              7.33621086930769e-14
-Ljung-Box Test p-value:                     5.345020056176901e-10
+Dynamic Quantile Test p-value:              7.272792765606557e-14
+Ljung-Box Test p-value:                     5.345020056176102e-10
 ______________________________________________________________________
 ```
 
@@ -66,13 +71,52 @@ RiskMetrics EWMA approach, λ=0.96, [0.99, 0.975] confidence levels
 The [`predict`](@ref) function will then return multiple results
 ```jldoctest MANUAL
 julia> predict(rms,BG96)
-[0.7129791067589807, 0.6006897706789867]
+2-element Array{Float64,1}:
+ 0.6774901732183329
+ 0.5707901016030177
 ```
 
 You can also provide a [`Vector`](@ref) of [`VaRModels`](@ref) to the [`backtest`](@ref) function in order to perform multiple backtesting procedures
 ```jldoctest MANUAL
 julia> backtest([rms,fevt],BG96,1000,dataset_name="Bollerslev and Ghysels(JBES 1996)")
-BacktestResult[______________________________________________________________________
+3-element Array{BacktestResult,1}:
+ ______________________________________________________________________
+
+Backtesting run on:                         Bollerslev and Ghysels(JBES 1996)
+Method used:                                RM-EWMA-0.96
+Confidence level:                           99.0%
+
+In-sample observations/window size:         1000
+Out-of-sample observations:                 974
+Violations:                                 21
+
+Value-at-Risk quantile level:               1.0%
+Violations percentage:                      2.1560574948665296%
+
+Uncondtional Coverage LR Test p-value:      0.0016710153907773877
+Dynamic Quantile Test p-value:              0.002829642728793844
+Ljung-Box Test p-value:                     0.6951726097998517
+______________________________________________________________________
+
+ ______________________________________________________________________
+
+Backtesting run on:                         Bollerslev and Ghysels(JBES 1996)
+Method used:                                RM-EWMA-0.96
+Confidence level:                           97.5%
+
+In-sample observations/window size:         1000
+Out-of-sample observations:                 974
+Violations:                                 31
+
+Value-at-Risk quantile level:               2.5%
+Violations percentage:                      3.1827515400410675%
+
+Uncondtional Coverage LR Test p-value:      0.19009150894828886
+Dynamic Quantile Test p-value:              0.005970740605658284
+Ljung-Box Test p-value:                     0.022118836432639555
+______________________________________________________________________
+
+ ______________________________________________________________________
 
 Backtesting run on:                         Bollerslev and Ghysels(JBES 1996)
 Method used:                                FEVT-EGARCH-StdSkewT
@@ -86,42 +130,7 @@ Value-at-Risk quantile level:               1.0%
 Violations percentage:                      0.7186858316221766%
 
 Uncondtional Coverage LR Test p-value:      0.3528600958576604
-Dynamic Quantile Test p-value:              0.7824260394178464
+Dynamic Quantile Test p-value:              0.7842246641252026
 Ljung-Box Test p-value:                     0.99835779977077
 ______________________________________________________________________
-, ______________________________________________________________________
-
-Backtesting run on:                         Bollerslev and Ghysels(JBES 1996)
-Method used:                                RM-EWMA-0.94
-Confidence level:                           99.0%
-
-In-sample observations/window size:         1000
-Out-of-sample observations:                 974
-Violations:                                 20
-
-Value-at-Risk quantile level:               1.0%
-Violations percentage:                      2.0533880903490758%
-
-Uncondtional Coverage LR Test p-value:      0.0038163257175188657
-Dynamic Quantile Test p-value:              3.009857068419523e-5
-Ljung-Box Test p-value:                     0.10673471090370372
-______________________________________________________________________
-, ______________________________________________________________________
-
-Backtesting run on:                         Bollerslev and Ghysels(JBES 1996)
-Method used:                                RM-EWMA-0.94
-Confidence level:                           97.5%
-
-In-sample observations/window size:         1000
-Out-of-sample observations:                 974
-Violations:                                 33
-
-Value-at-Risk quantile level:               2.5%
-Violations percentage:                      3.3880903490759757%
-
-Uncondtional Coverage LR Test p-value:      0.09186260747237893
-Dynamic Quantile Test p-value:              0.008501941078277678
-Ljung-Box Test p-value:                     0.057764853136010125
-______________________________________________________________________
-]
 ```
