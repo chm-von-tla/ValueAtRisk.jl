@@ -33,16 +33,16 @@ You can obtain VaR forecasts by using the [`predict`](@ref) function:
 ```jldoctest MANUAL
 # using the BG96 dataset provided by ARCHModels
 julia> predict(fevt,BG96)
-1-element Array{Float64,1}:
- 1.5173537504604684
+1-element Vector{Float64}:
+ 1.5173537504541281
 ```
 
 You can also use the [`backtest`](@ref) function to evaluate the out-of-sample forecasting performance of a [`VaRModel`](@ref). [`backtest`](@ref) returns an object of type [`BacktestResult`](@ref)
 ```jldoctest MANUAL
 julia> backtest(fevt,BG96,500)
-┌ Warning: Could not fit EGARCH{1,1,1,T} where T<:AbstractFloat, falling back to GARCH{1,1}
+┌ Warning: Could not fit EGARCH{1, 1, 1, T} where T<:AbstractFloat, falling back to GARCH{1,1}
 └ @ ValueAtRisk ~/pgm/julia/dev/ValueAtRisk/src/utils.jl:14
-┌ Warning: Could not fit EGARCH{1,1,1,T} where T<:AbstractFloat, falling back to GARCH{1,1}
+┌ Warning: Could not fit EGARCH{1, 1, 1, T} where T<:AbstractFloat, falling back to GARCH{1,1}
 └ @ ValueAtRisk ~/pgm/julia/dev/ValueAtRisk/src/utils.jl:14
 ______________________________________________________________________
 
@@ -52,14 +52,14 @@ Confidence level:                           99.0%
 
 In-sample observations/window size:         500
 Out-of-sample observations:                 1474
-Violations:                                 19
+Violations:                                 18
 
 Value-at-Risk quantile level:               1.0%
-Violations percentage:                      1.289009497964722%
+Violations percentage:                      1.2211668928086838%
 
-Uncondtional Coverage LR Test p-value:      0.285723380115036
-Dynamic Quantile Test p-value:              7.272792765606557e-14
-Ljung-Box Test p-value:                     5.345020056176102e-10
+Uncondtional Coverage LR Test p-value:      0.4094711648996806
+Dynamic Quantile Test p-value:              2.7523601502903782e-12
+Ljung-Box Test p-value:                     4.475778001388754e-9
 ______________________________________________________________________
 ```
 
@@ -71,7 +71,7 @@ RiskMetrics EWMA approach, λ=0.96, [0.99, 0.975] confidence levels
 The [`predict`](@ref) function will then return multiple results
 ```jldoctest MANUAL
 julia> predict(rms,BG96)
-2-element Array{Float64,1}:
+2-element Vector{Float64}:
  0.6774901732183329
  0.5707901016030177
 ```
@@ -80,24 +80,6 @@ You can also provide a [`Vector`](@ref) of [`VaRModels`](@ref) to the [`backtest
 ```jldoctest MANUAL
 julia> backtest([rms,fevt],BG96,1000,dataset_name="Bollerslev and Ghysels(JBES 1996)")
 3-element Vector{BacktestResult}:
- ______________________________________________________________________
-
-Backtesting run on:                         Bollerslev and Ghysels(JBES 1996)
-Method used:                                FEVT-EGARCH-StdSkewT
-Confidence level:                           99.0%
-
-In-sample observations/window size:         1000
-Out-of-sample observations:                 974
-Violations:                                 7
-
-Value-at-Risk quantile level:               1.0%
-Violations percentage:                      0.7186858316221766%
-
-Uncondtional Coverage LR Test p-value:      0.3528600958576604
-Dynamic Quantile Test p-value:              0.7837323874488014
-Ljung-Box Test p-value:                     0.99835779977077
-______________________________________________________________________
-
  ______________________________________________________________________
 
 Backtesting run on:                         Bollerslev and Ghysels(JBES 1996)
@@ -132,5 +114,23 @@ Violations percentage:                      3.1827515400410675%
 Uncondtional Coverage LR Test p-value:      0.19009150894828886
 Dynamic Quantile Test p-value:              0.0059707406056583
 Ljung-Box Test p-value:                     0.02211883643264028
+______________________________________________________________________
+
+ ______________________________________________________________________
+
+Backtesting run on:                         Bollerslev and Ghysels(JBES 1996)
+Method used:                                FEVT-EGARCH-StdSkewT
+Confidence level:                           99.0%
+
+In-sample observations/window size:         1000
+Out-of-sample observations:                 974
+Violations:                                 7
+
+Value-at-Risk quantile level:               1.0%
+Violations percentage:                      0.7186858316221766%
+
+Uncondtional Coverage LR Test p-value:      0.3528600958576604
+Dynamic Quantile Test p-value:              0.784224594350519
+Ljung-Box Test p-value:                     0.99835779977077
 ______________________________________________________________________
 ```
