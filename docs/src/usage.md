@@ -3,7 +3,9 @@ DocTestSetup = quote
     using Random
     Random.seed!(1)
 end
-DocTestFilters = r"[0-9\.]+"
+```
+```@meta
+DocTestFilters = r".*[0-9\.]+.*"
 ```
 # Usage
 
