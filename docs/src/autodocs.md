@@ -7,5 +7,5 @@
 
 ```@autodocs
 Modules = [ValueAtRisk]
-Filter = t -> typeof(t) === UnionAll && t <: ValueAtRisk.VaRModel
+Filter = t -> !(typeof(t) === UnionAll && t <: ValueAtRisk.VaRModel)
 ```
