@@ -1,4 +1,4 @@
-""""
+"""
     flexfit(asp::ARCHSpec, data::AbstractVector)
 
 A wrapper around `fit(VS::Type{<:UnivariateVolatilitySpec}, data; dist=StdNormal,
