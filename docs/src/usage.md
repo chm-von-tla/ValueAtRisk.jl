@@ -83,6 +83,24 @@ julia> backtest([rms,fevt],BG96,1000,dataset_name="Bollerslev and Ghysels(JBES 1
  ______________________________________________________________________
 
 Backtesting run on:                         Bollerslev and Ghysels(JBES 1996)
+Method used:                                FEVT-EGARCH-StdSkewT
+Confidence level:                           99.0%
+
+In-sample observations/window size:         1000
+Out-of-sample observations:                 974
+Violations:                                 7
+
+Value-at-Risk quantile level:               1.0%
+Violations percentage:                      0.7186858316221766%
+
+Uncondtional Coverage LR Test p-value:      0.3528600958576604
+Dynamic Quantile Test p-value:              0.7837323874488014
+Ljung-Box Test p-value:                     0.99835779977077
+______________________________________________________________________
+
+ ______________________________________________________________________
+
+Backtesting run on:                         Bollerslev and Ghysels(JBES 1996)
 Method used:                                RM-EWMA-0.96
 Confidence level:                           99.0%
 
@@ -114,23 +132,5 @@ Violations percentage:                      3.1827515400410675%
 Uncondtional Coverage LR Test p-value:      0.19009150894828886
 Dynamic Quantile Test p-value:              0.0059707406056583
 Ljung-Box Test p-value:                     0.02211883643264028
-______________________________________________________________________
-
- ______________________________________________________________________
-
-Backtesting run on:                         Bollerslev and Ghysels(JBES 1996)
-Method used:                                FEVT-EGARCH-StdSkewT
-Confidence level:                           99.0%
-
-In-sample observations/window size:         1000
-Out-of-sample observations:                 974
-Violations:                                 7
-
-Value-at-Risk quantile level:               1.0%
-Violations percentage:                      0.7186858316221766%
-
-Uncondtional Coverage LR Test p-value:      0.3528600958576604
-Dynamic Quantile Test p-value:              0.7859726185767337
-Ljung-Box Test p-value:                     0.99835779977077
 ______________________________________________________________________
 ```

@@ -6,9 +6,7 @@ CurrentModule = ValueAtRisk
 
 Documentation for [ValueAtRisk](https://github.com/chm-von-tla/ValueAtRisk.jl).
 
-```@index
-```
-## Basics
+## Introduction
 
 [Value-at-Risk](https://en.wikipedia.org/wiki/Value_at_risk) is a method for measuring the risk of extremal losses in financial investments. [Nieto and Ruiz (2016)](https://doi.org/10.1016/j.ijforecast.2015.08.003) and [Kuester et al. (2005)](https://doi.org/10.1093/jjfinec/nbj002) provide a good overview of the subject. 
 
