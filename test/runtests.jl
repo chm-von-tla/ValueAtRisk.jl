@@ -1,8 +1,8 @@
 using ValueAtRisk
 using Distributions
 using Test
+using Documenter
 using Random
-using ARCHModels
 
 
 Random.seed!(36)
@@ -39,6 +39,9 @@ end
         m = match(vmname_format,repr(vm))
         @test m["name_only"] != nothing && m["confidence_levels"] == "$(round.((1 .- test_lvls), digits=4)) confidence levels"
     end
+end
+@testset "doctests" begin
+    doctest(ValueAtRisk)
 end
 
 # print method ambiguities
