@@ -17,10 +17,10 @@ Historical Simulation (naive empirical quantile approach), [0.99] confidence lev
 A lot of the implemented methods depend on an ARCH model specification. We use the [`ARCHModels`](@ref) package for these methods and we provide a wrapper type for specification of the arch dynamics
 ```jldoctest MANUAL
 julia> asp = ARCHSpec(GARCH{1,1})
-Intercept-TGARCH{0,1,1} model with StdNormal innovations
+Intercept-GARCH{1, 1, T} where T<:AbstractFloat model with StdNormal innovations
 
 julia> asp2 = ARCHSpec(EGARCH{1,1,1},meanspec=AR{1},dist=StdSkewT)
-ARMA{1,0}-EGARCH{1,1,1} model with StdSkewT innovations
+AR{1, T} where T-EGARCH{1, 1, 1, T} where T<:AbstractFloat model with StdSkewT innovations
 ```
 
 You can then specify a model with ARCH dynamics like so:
@@ -79,7 +79,7 @@ julia> predict(rms,BG96)
 You can also provide a [`Vector`](@ref) of [`VaRModels`](@ref) to the [`backtest`](@ref) function in order to perform multiple backtesting procedures
 ```jldoctest MANUAL
 julia> backtest([rms,fevt],BG96,1000,dataset_name="Bollerslev and Ghysels(JBES 1996)")
-3-element Array{BacktestResult,1}:
+3-element Vector{BacktestResult}:
  ______________________________________________________________________
 
 Backtesting run on:                         Bollerslev and Ghysels(JBES 1996)
@@ -94,8 +94,8 @@ Value-at-Risk quantile level:               1.0%
 Violations percentage:                      2.1560574948665296%
 
 Uncondtional Coverage LR Test p-value:      0.0016710153907773877
-Dynamic Quantile Test p-value:              0.002829642728793844
-Ljung-Box Test p-value:                     0.6951726097998517
+Dynamic Quantile Test p-value:              0.002829642728793837
+Ljung-Box Test p-value:                     0.6951726097998511
 ______________________________________________________________________
 
  ______________________________________________________________________
@@ -112,8 +112,8 @@ Value-at-Risk quantile level:               2.5%
 Violations percentage:                      3.1827515400410675%
 
 Uncondtional Coverage LR Test p-value:      0.19009150894828886
-Dynamic Quantile Test p-value:              0.005970740605658284
-Ljung-Box Test p-value:                     0.022118836432639555
+Dynamic Quantile Test p-value:              0.0059707406056583
+Ljung-Box Test p-value:                     0.02211883643264028
 ______________________________________________________________________
 
  ______________________________________________________________________
@@ -130,7 +130,7 @@ Value-at-Risk quantile level:               1.0%
 Violations percentage:                      0.7186858316221766%
 
 Uncondtional Coverage LR Test p-value:      0.3528600958576604
-Dynamic Quantile Test p-value:              0.7842246641252026
+Dynamic Quantile Test p-value:              0.7859726185767337
 Ljung-Box Test p-value:                     0.99835779977077
 ______________________________________________________________________
 ```
