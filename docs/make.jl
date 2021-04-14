@@ -8,6 +8,7 @@ makedocs(;
     authors="Charis P. Michelakis <ch.p.michelakis@gmail.com>",
     repo="https://github.com/chm-von-tla/ValueAtRisk.jl/blob/{commit}{path}#{line}",
     sitename="ValueAtRisk.jl",
+    doctest = :fix,
     format=Documenter.HTML(;
         prettyurls=get(ENV, "CI", "false") == "true",
         canonical="https://chm-von-tla.github.io/ValueAtRisk.jl",

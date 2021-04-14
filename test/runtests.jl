@@ -40,9 +40,6 @@ end
         @test m["name_only"] != nothing && m["confidence_levels"] == "$(round.((1 .- test_lvls), digits=4)) confidence levels"
     end
 end
-@testset "doctests" begin
-    doctest(ValueAtRisk)
-end
 
 # print method ambiguities
 println("Potentially stale exports: ")

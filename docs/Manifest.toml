@@ -500,6 +500,14 @@ version = "1.0.2"
 [[Unicode]]
 uuid = "4ec0a83e-493e-50e2-b9ac-8f72acf5a8f5"
 
+[[ValueAtRisk]]
+deps = ["ARCHModels", "Distributions", "Documenter", "HypothesisTests", "Optim", "Random", "Reexport", "StatsBase"]
+git-tree-sha1 = "0080dde3878e4c5282e42c77e0a09023bc0b653f"
+repo-rev = "master"
+repo-url = "/home/chm/pgm/julia/dev/ValueAtRisk"
+uuid = "a6faba0b-26a4-479a-8301-f768699ecb7c"
+version = "0.4.0"
+
 [[Zlib_jll]]
 deps = ["Libdl"]
 uuid = "83775a58-1f1d-513f-b197-d71354ab007a"
