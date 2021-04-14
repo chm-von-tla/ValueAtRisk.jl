@@ -12,3 +12,19 @@
 This package is still at an early development stage. Please check the [documentation](https://chm-von-tla.github.io/ValueAtRisk.jl/dev) for more.
 
 Any feedback is appreciated!
+
+# Installation
+
+`ValueAtRisk` is a registered Julia package. To install it , do
+
+```
+add ValueAtRisk
+```
+
+in the Pkg REPL mode (which is entered by pressing `]` at the prompt).
+
+Alternatively you may run `using Pkg; Pkg.add("ValueAtRisk")` at the repl
+
+# Usage
+
+Check the [documentation](https://chm-von-tla.github.io/ValueAtRisk.jl/dev)
