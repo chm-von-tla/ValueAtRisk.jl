@@ -17,7 +17,7 @@ makedocs(;
     pages=[
         "Home" => "index.md",
         "Usage" => "usage.md",
-        "VaR methods available" => "models.md",
+        "Available VaR Methods" => "models.md",
         "Reference Guide" => "autodocs.md"
     ],
 )
