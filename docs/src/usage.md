@@ -96,7 +96,7 @@ Value-at-Risk quantile level:               1.0%
 Violations percentage:                      2.1560574948665296%
 
 Uncondtional Coverage LR Test p-value:      0.0016710153907773877
-Dynamic Quantile Test p-value:              0.002829642728793837
+Dynamic Quantile Test p-value:              0.0028296427287938393
 Ljung-Box Test p-value:                     0.6951726097998511
 ______________________________________________________________________
 
@@ -132,7 +132,7 @@ Value-at-Risk quantile level:               1.0%
 Violations percentage:                      0.7186858316221766%
 
 Uncondtional Coverage LR Test p-value:      0.3528600958576604
-Dynamic Quantile Test p-value:              0.784224594350519
+Dynamic Quantile Test p-value:              0.7840970640689414
 Ljung-Box Test p-value:                     0.99835779977077
 ______________________________________________________________________
 ```
