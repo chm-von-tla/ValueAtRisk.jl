@@ -9,7 +9,7 @@ makedocs(;
     repo="https://github.com/chm-von-tla/ValueAtRisk.jl/blob/{commit}{path}#{line}",
     sitename="ValueAtRisk.jl",
     format=Documenter.HTML(;
-        prettyurls=get(ENV, "CI", "false") == "true",
+        prettyurls=true,
         canonical="https://chm-von-tla.github.io/ValueAtRisk.jl",
         assets=String[],
     ),
@@ -24,8 +24,7 @@ makedocs(;
 
 deploydocs(
     repo = "github.com/chm-von-tla/ValueAtRisk.jl.git",
-    # branch = "gh-pages",
-    # devbranch = "master",
-    # versions = ["stable" => "v^", "dev" => "dev"],
-    # deploy_config = Documenter.GitHubActions
+    branch = "gh-pages",
+    devbranch = "master",
+    versions = ["stable" => "v^", "dev" => "dev"],
 )
