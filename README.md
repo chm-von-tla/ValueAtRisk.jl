@@ -9,7 +9,9 @@
 
 [Value-at-Risk](https://en.wikipedia.org/wiki/Value_at_risk) is a method for measuring the risk of extremal losses in financial investments. [Nieto and Ruiz (2016)](https://doi.org/10.1016/j.ijforecast.2015.08.003) and [Kuester et al. (2005)](https://doi.org/10.1093/jjfinec/nbj002) provide a good overview of the subject. 
 
-This package is still at an early development stage. Please check the [documentation](https://chm-von-tla.github.io/ValueAtRisk.jl/dev) for more.
+This package is still at an experimental development stage. It has been written in a way to accomondate the needs of my thesis. (If you want to take a look at it you can find it [here](https://www.pyxida.aueb.gr/index.php?op=view_object&object_id=8462). The model mentioned as EWMA in the thesis corresponds to the `EWMAHistoricalSimulationVaR` model in this package. The usual RiskMetrics EWMA model has  not been used in the thesis and has been added here as `EWMARiskMetricsVaR`. The code for the LASSO-GARCH model has not been uploaded at the moment since it was a novel approach that required/requires more research) 
+
+Please check the [documentation](https://chm-von-tla.github.io/ValueAtRisk.jl/dev) for more regarding use of the package and implementation concerns. 
 
 Any feedback is appreciated!
 
