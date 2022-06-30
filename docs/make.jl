@@ -25,4 +25,7 @@ makedocs(;
 
 deploydocs(
     repo = "github.com/chm-von-tla/ValueAtRisk.jl.git",
+    devbranch = "master",
+    devurl = "dev",
+    versions = ["stable" => "v^", "dev" => "dev"]
 )
