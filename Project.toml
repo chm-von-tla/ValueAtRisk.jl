@@ -14,8 +14,9 @@ Reexport = "189a3867-3050-52da-a836-e630ba90ab69"
 StatsBase = "2913bbd2-ae8a-5f71-8c99-4fb6c76f3a91"
 
 [compat]
+Distributions = "0.24, 0.25"
+Documenter = "0.26"
 ARCHModels = "2.2.0"
-Distributions = "0.24"
 Documenter = "0.26, 0.27"
 HypothesisTests = "0.10"
 Optim = "1.0.0"
