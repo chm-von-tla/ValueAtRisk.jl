@@ -57,7 +57,7 @@ jobs:
             using Documenter: DocMeta, doctest
             using ValueAtRisk
             DocMeta.setdocmeta!(ValueAtRisk, :DocTestSetup, :(using ValueAtRisk); recursive=true)
-            doctest(ValueAtRisk)'
+            doctest(ValueAtRisk,fix=true)'
       - run: julia --project=docs docs/make.jl
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
