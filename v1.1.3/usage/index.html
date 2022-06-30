@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Usage · ValueAtRisk.jl</title><link rel="canonical" href="https://chm-von-tla.github.io/ValueAtRisk.jl/usage/"/><link href="https://fonts.googleapis.com/css?family=Lato|Roboto+Mono" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.0/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.0/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.0/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../assets/documenter.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit">ValueAtRisk.jl</span></div><form class="docs-search" action="../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../">Home</a></li><li class="is-active"><a class="tocitem" href>Usage</a></li><li><a class="tocitem" href="../models/">Available VaR Methods</a></li><li><a class="tocitem" href="../autodocs/">Reference Guide</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>Usage</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Usage</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/chm-von-tla/ValueAtRisk.jl/blob/master/docs/src/usage.md#" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="Usage"><a class="docs-heading-anchor" href="#Usage">Usage</a><a id="Usage-1"></a><a class="docs-heading-anchor-permalink" href="#Usage" title="Permalink"></a></h1><p>You may specify a Value-at-Risk model like so:</p><pre><code class="language-julia-repl">julia&gt; using ValueAtRisk
+
+julia&gt; hs = HistoricalSimulationVaR(0.01)
+Historical Simulation (naive empirical quantile approach), [0.99] confidence levels</code></pre><p>A lot of the implemented methods depend on an ARCH model specification. We use the <a href="@ref"><code>ARCHModels</code></a> package for these methods and we provide a wrapper type for specification of the arch dynamics</p><pre><code class="language-julia-repl">julia&gt; asp = ARCHSpec(GARCH{1,1})
+Intercept-GARCH{1, 1, T} where T&lt;:AbstractFloat model with StdNormal innovations
+
+julia&gt; asp2 = ARCHSpec(EGARCH{1,1,1},meanspec=AR{1},dist=StdSkewT)
+AR{1, T} where T-EGARCH{1, 1, 1, T} where T&lt;:AbstractFloat model with StdSkewT innovations</code></pre><p>You can then specify a model with ARCH dynamics like so:</p><pre><code class="language-julia-repl">julia&gt; fevt = FilteredExtremeValueTheoryVaR(0.01,archspec=asp2)
+Extreme Value Theory on residuals filtered by AR{1, T} where T-EGARCH{1, 1, 1, T} where T&lt;:AbstractFloat model with StdSkewT innovations, [0.99] confidence levels</code></pre><p>You can obtain VaR forecasts by using the <a href="../autodocs/#StatsAPI.predict-Tuple{VaRModel, AbstractVector}"><code>predict</code></a> function:</p><pre><code class="language-julia-repl"># using the BG96 dataset provided by ARCHModels
+julia&gt; predict(fevt,BG96)
+1-element Vector{Float64}:
+ 1.5173537504541281</code></pre><p>You can also use the <a href="../autodocs/#ValueAtRisk.backtest-Tuple{VaRModel, Vector{&lt;:Real}, Integer}"><code>backtest</code></a> function to evaluate the out-of-sample forecasting performance of a <a href="@ref"><code>VaRModel</code></a>. <a href="../autodocs/#ValueAtRisk.backtest-Tuple{VaRModel, Vector{&lt;:Real}, Integer}"><code>backtest</code></a> returns an object of type <a href="../autodocs/#ValueAtRisk.BacktestResult"><code>BacktestResult</code></a></p><pre><code class="language-julia-repl">julia&gt; backtest(fevt,BG96,500)
+┌ Warning: Could not fit EGARCH{1, 1, 1, T} where T&lt;:AbstractFloat, falling back to GARCH{1,1}
+└ @ ValueAtRisk ~/pgm/julia/dev/ValueAtRisk/src/utils.jl:14
+┌ Warning: Could not fit EGARCH{1, 1, 1, T} where T&lt;:AbstractFloat, falling back to GARCH{1,1}
+└ @ ValueAtRisk ~/pgm/julia/dev/ValueAtRisk/src/utils.jl:14
+______________________________________________________________________
+
+Backtesting run on:                         Dataset name not specified
+Method used:                                FEVT-EGARCH-StdSkewT
+Confidence level:                           99.0%
+
+In-sample observations/window size:         500
+Out-of-sample observations:                 1474
+Violations:                                 18
+
+Value-at-Risk quantile level:               1.0%
+Violations percentage:                      1.2211668928086838%
+
+Uncondtional Coverage LR Test p-value:      0.4094711648996806
+Dynamic Quantile Test p-value:              2.7523601502903782e-12
+Ljung-Box Test p-value:                     4.475778001388754e-9
+______________________________________________________________________</code></pre><p>Every Value-at-Risk model has a multi-quantile representation. It is possible to define a <a href="@ref"><code>VaRModel</code></a> with multiple quantiles:</p><pre><code class="language-julia-repl">julia&gt; rms = EWMARiskMetricsVaR([0.01,0.025],decayfactor=0.96)
+RiskMetrics EWMA approach, λ=0.96, [0.99, 0.975] confidence levels</code></pre><p>The <a href="../autodocs/#StatsAPI.predict-Tuple{VaRModel, AbstractVector}"><code>predict</code></a> function will then return multiple results</p><pre><code class="language-julia-repl">julia&gt; predict(rms,BG96)
+2-element Vector{Float64}:
+ 0.6774901732183329
+ 0.5707901016030177</code></pre><p>You can also provide a <a href="@ref"><code>Vector</code></a> of <a href="@ref"><code>VaRModels</code></a> to the <a href="../autodocs/#ValueAtRisk.backtest-Tuple{VaRModel, Vector{&lt;:Real}, Integer}"><code>backtest</code></a> function in order to perform multiple backtesting procedures</p><pre><code class="language-julia-repl">julia&gt; backtest([rms,fevt],BG96,1000,dataset_name=&quot;Bollerslev and Ghysels(JBES 1996)&quot;)
+3-element Vector{BacktestResult}:
+ ______________________________________________________________________
+
+Backtesting run on:                         Bollerslev and Ghysels(JBES 1996)
+Method used:                                RM-EWMA-0.96
+Confidence level:                           99.0%
+
+In-sample observations/window size:         1000
+Out-of-sample observations:                 974
+Violations:                                 21
+
+Value-at-Risk quantile level:               1.0%
+Violations percentage:                      2.1560574948665296%
+
+Uncondtional Coverage LR Test p-value:      0.0016710153907773877
+Dynamic Quantile Test p-value:              0.0028296427287938393
+Ljung-Box Test p-value:                     0.6951726097998511
+______________________________________________________________________
+
+ ______________________________________________________________________
+
+Backtesting run on:                         Bollerslev and Ghysels(JBES 1996)
+Method used:                                RM-EWMA-0.96
+Confidence level:                           97.5%
+
+In-sample observations/window size:         1000
+Out-of-sample observations:                 974
+Violations:                                 31
+
+Value-at-Risk quantile level:               2.5%
+Violations percentage:                      3.1827515400410675%
+
+Uncondtional Coverage LR Test p-value:      0.19009150894828886
+Dynamic Quantile Test p-value:              0.0059707406056583
+Ljung-Box Test p-value:                     0.02211883643264028
+______________________________________________________________________
+
+ ______________________________________________________________________
+
+Backtesting run on:                         Bollerslev and Ghysels(JBES 1996)
+Method used:                                FEVT-EGARCH-StdSkewT
+Confidence level:                           99.0%
+
+In-sample observations/window size:         1000
+Out-of-sample observations:                 974
+Violations:                                 7
+
+Value-at-Risk quantile level:               1.0%
+Violations percentage:                      0.7186858316221766%
+
+Uncondtional Coverage LR Test p-value:      0.3528600958576604
+Dynamic Quantile Test p-value:              0.7840970640689414
+Ljung-Box Test p-value:                     0.99835779977077
+______________________________________________________________________</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../">« Home</a><a class="docs-footer-nextpage" href="../models/">Available VaR Methods »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Thursday 30 June 2022 14:23">Thursday 30 June 2022</span>. Using Julia version 1.7.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
