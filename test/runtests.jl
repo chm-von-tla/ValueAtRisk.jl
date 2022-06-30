@@ -18,7 +18,7 @@ test_archspec = ARCHSpec(EGARCH{1,1,1}, meanspec=ARMA{1,1}, dist=StdSkewT)
     @test isapprox(predict(ARCHVaR(test_lvls, archspec=test_archspec), BG96), ARCHModels_res, rtol=1e-4)
     @test isapprox(predict(FilteredHistoricalSimulationVaR(test_lvls),BG96), [1.1203427769524017, 0.8311624687898619], rtol=1e-4)
     @test isapprox(predict(FilteredHistoricalSimulationVaR(test_lvls, archspec=test_archspec), BG96), [1.137636707660993, 0.7868248434849923], rtol=1e-4)
-    @test isapprox(predict(ExtremeValueTheoryVaR(test_lvls),BG96), [1.4494467283414116, 1.0900942879197193], rtol=1e-3)
+    @test isapprox(predict(ExtremeValueTheoryVaR(test_lvls),BG96), [1.4494467283414116, 1.0900942879197193], rtol=5*1e-3)
     @test isapprox(predict(FilteredExtremeValueTheoryVaR(test_lvls),BG96), [1.424807399619189, 1.1049531357158502], rtol=1e-4)
     @test isapprox((predict(FilteredExtremeValueTheoryVaR(test_lvls, archspec=test_archspec), BG96)), [1.512828548418339, 1.1503812783002576], rtol=1e-4)
     @test isapprox(predict(CAViaR_ad(test_lvls),BG96), [1.0569669926351937, 0.5626693667827622], rtol=1e-4) || isapprox(predict(CAViaR_ad(test_lvls),BG96), [1.1082793498593972, 0.5626693667827622], rtol=1e-4) ## two different values supplied since the algorithm is unstable
