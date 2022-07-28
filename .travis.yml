@@ -18,7 +18,6 @@ jobs:
     - julia: nightly
   include:
     - stage: Documentation
-      julia: 1.7
       script: |
         julia --project=docs -e '
           using Pkg
