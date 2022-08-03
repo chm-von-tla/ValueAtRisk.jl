@@ -20,6 +20,7 @@ jobs:
     - julia: nightly
   include:
     - stage: Documentation
+      julia: 1
       script: |
         julia --project=docs -e '
           using Pkg
@@ -28,7 +29,7 @@ jobs:
           using Documenter: DocMeta, doctest
           using ValueAtRisk
           DocMeta.setdocmeta!(ValueAtRisk, :DocTestSetup, :(using ValueAtRisk); recursive=true)
-          doctest(ValueAtRisk,fix=true)
+          doctest(ValueAtRisk)
           include("docs/make.jl")'
       after_success: skip
 after_success:
